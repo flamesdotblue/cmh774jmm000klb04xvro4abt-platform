@@ -1,7 +1,6 @@
-import { memo } from 'react';
 import { BarChart3, Sparkles, Calendar } from 'lucide-react';
 
-function StatsPanel({ stats }) {
+export default function StatsPanel({ stats }) {
   const { totalHabits, totalCompletions, bestStreak } = stats;
 
   const cards = [
@@ -29,12 +28,9 @@ function StatsPanel({ stats }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
       {cards.map((c) => (
-        <div
-          key={c.title}
-          className={`relative overflow-hidden rounded-2xl border border-white/10 bg-neutral-900/60 p-4 backdrop-blur-md`}
-        >
+        <div key={c.title} className={`relative overflow-hidden rounded-2xl border border-white/10 bg-neutral-900/60 p-4 backdrop-blur-md`}>
           <div className={`pointer-events-none absolute -inset-px bg-gradient-to-b ${c.gradient}`} />
           <div className="relative z-10 flex items-center gap-3">
             <div className={`rounded-xl border border-white/10 bg-neutral-950 p-3 ring-2 ${c.ring}`}>
@@ -50,5 +46,3 @@ function StatsPanel({ stats }) {
     </div>
   );
 }
-
-export default memo(StatsPanel);

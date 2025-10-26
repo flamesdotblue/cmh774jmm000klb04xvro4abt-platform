@@ -7,6 +7,7 @@ import StatsPanel from './components/StatsPanel';
 
 function getISO(date) {
   const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
@@ -37,7 +38,8 @@ function calcStreak(dates) {
   let cursor = new Date();
   cursor.setHours(0, 0, 0, 0);
   while (streak < 3650) {
-    if (set.has(getISO(cursor))) {
+    const iso = getISO(cursor);
+    if (set.has(iso)) {
       streak += 1;
       cursor.setDate(cursor.getDate() - 1);
     } else {
@@ -58,22 +60,17 @@ export default function App() {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) setHabits(parsed);
       }
-    } catch (e) {
-      // ignore
-    }
+    } catch {}
   }, []);
 
   useEffect(() => {
     try {
       localStorage.setItem('habit-tracker:data', JSON.stringify(habits));
-    } catch (e) {
-      // ignore
-    }
+    } catch {}
   }, [habits]);
 
   useEffect(() => {
-    const onTick = () => setWeekDates(getCurrentWeekDates());
-    const id = setInterval(onTick, 60 * 1000);
+    const id = setInterval(() => setWeekDates(getCurrentWeekDates()), 60 * 1000);
     return () => clearInterval(id);
   }, []);
 
@@ -115,8 +112,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-50 antialiased">
       <Hero />
-      <main className="relative z-10 mx-auto -mt-24 max-w-6xl px-4 pb-24">
-        <div className="grid gap-6 md:grid-cols-3">
+      <main className="relative z-10 mx-auto -mt-20 max-w-6xl px-4 pb-24 sm:-mt-24">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="md:col-span-2">
             <HabitForm onAdd={addHabit} />
           </div>
@@ -130,7 +127,7 @@ export default function App() {
           calcStreak={calcStreak}
         />
       </main>
-      <Toaster position="top-right" />
+      <Toaster position="top-right" richColors />
     </div>
   );
 }
