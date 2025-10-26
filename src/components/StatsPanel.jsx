@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
+import { memo } from 'react';
 import { BarChart3, Sparkles, Calendar } from 'lucide-react';
 
-export default function StatsPanel({ stats }) {
+function StatsPanel({ stats }) {
   const { totalHabits, totalCompletions, bestStreak } = stats;
 
   const cards = [
@@ -29,13 +29,10 @@ export default function StatsPanel({ stats }) {
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-4">
-      {cards.map((c, i) => (
-        <motion.div
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+      {cards.map((c) => (
+        <div
           key={c.title}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.05 }}
           className={`relative overflow-hidden rounded-2xl border border-white/10 bg-neutral-900/60 p-4 backdrop-blur-md`}
         >
           <div className={`pointer-events-none absolute -inset-px bg-gradient-to-b ${c.gradient}`} />
@@ -48,8 +45,10 @@ export default function StatsPanel({ stats }) {
               <div className="text-2xl font-semibold text-white">{c.value}</div>
             </div>
           </div>
-        </motion.div>
+        </div>
       ))}
     </div>
   );
 }
+
+export default memo(StatsPanel);
